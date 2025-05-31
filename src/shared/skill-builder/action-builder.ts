@@ -1,5 +1,5 @@
 import { Bin } from "@rbxts/bin";
-import { SkillBuilder } from ".";
+import { SkillBuilder } from "./main";
 export interface FnParamsObj {
 	env: {
 		character: Instance;
