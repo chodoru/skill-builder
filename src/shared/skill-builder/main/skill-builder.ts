@@ -7,7 +7,7 @@ parsePath("../../actions")
 	.forEach((v) => require(v));
 type unkObj = { [key: string]: unknown };
 type NextParams = unkObj | typeof EXIT_SKILL;
-type voidFn = (params: ActionFunctionParams) => void;
+type voidFn = (params: ActionFunctionParams, returned: unkObj) => void;
 interface InstructionObject {
 	actionTuple?: [ActionFunction, unkObj];
 	afterFn?: voidFn;
@@ -68,8 +68,9 @@ export class SkillParser {
 		if (!this.canRun) return;
 		if (previousParams === EXIT_SKILL) return this.stop();
 		const r = this.sequence[this.pointer - 1];
-		if (r && r.saveResultAs !== undefined) {
-			this.saved.set(r.saveResultAs, previousParams);
+		if (r) {
+			if (r.saveResultAs !== undefined) this.saved.set(r.saveResultAs, previousParams);
+			if (r.afterFn) r.afterFn(this, previousParams);
 		}
 		this.previous = previousParams;
 		if (this.pointer >= this.sequence.size()) return this.stop();
@@ -81,13 +82,7 @@ export class SkillParser {
 				warn(e);
 				return this.stop();
 			}
-		}
-		if (sequenceEntry.afterFn) {
-			sequenceEntry.afterFn(this);
-		}
-		if (sequenceEntry.actionTuple === undefined) {
-			this.next();
-		}
+		} else this.next();
 	}
 	public stop() {
 		this.canRun = false;
