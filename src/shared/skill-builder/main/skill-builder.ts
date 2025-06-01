@@ -45,6 +45,7 @@ export class SkillBuilder {
 	}
 }
 export class SkillParser {
+	private canRun = true;
 	private pointer = -1;
 	public bin = new Bin();
 	private saved = new Map<string, unkObj>();
@@ -56,6 +57,7 @@ export class SkillParser {
 		return this.saved;
 	}
 	public next(previousParams?: NextParams) {
+		if (!this.canRun) return;
 		++this.pointer;
 		this.run(previousParams);
 	}
@@ -63,6 +65,7 @@ export class SkillParser {
 		return this.previous;
 	}
 	private async run(previousParams: NextParams = {}) {
+		if (!this.canRun) return;
 		if (previousParams === EXIT_SKILL) return this.stop();
 		const r = this.sequence[this.pointer - 1];
 		if (r && r.saveResultAs !== undefined) {
@@ -87,6 +90,7 @@ export class SkillParser {
 		}
 	}
 	public stop() {
+		this.canRun = false;
 		this.pointer = -1;
 		this.bin.destroy();
 	}
