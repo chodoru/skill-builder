@@ -50,7 +50,7 @@ export class SkillParser {
 	public bin = new Bin();
 	private saved = new Map<string, unkObj>();
 	private previous?: unkObj;
-	constructor(private sequence: SkillBuilder["instructionSequence"], public args: unkObj) {
+	constructor(private sequence: SkillBuilder["instructionSequence"], public initParams: unkObj) {
 		this.next();
 	}
 	public getSaved() {
