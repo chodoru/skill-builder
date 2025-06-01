@@ -1222,28 +1222,6 @@ Flamework.ignite()
 					<UniqueId name="UniqueId">5cf9ac95759887ba084b95d90000038b</UniqueId>
 				</Properties>
 			</Item>
-			<Item class="ModuleScript" referent="4">
-				<Properties>
-					<BinaryString name="AttributesSerialize"></BinaryString>
-					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-					<bool name="DefinesCapabilities">false</bool>
-					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-					<Content name="LinkedSource"><null></null></Content>
-					<string name="Name">module</string>
-					<string name="ScriptGuid">{08e7a4c6-f713-44b6-bf45-9eaa0125ec48}</string>
-					<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
-local function makeHello(name)
-	return `Hello from {name}!`
-end
-return {
-	makeHello = makeHello,
-}
-]]></ProtectedString>
-					<int64 name="SourceAssetId">-1</int64>
-					<BinaryString name="Tags"></BinaryString>
-					<UniqueId name="UniqueId">5cf9ac95759887ba084b95d90000038c</UniqueId>
-				</Properties>
-			</Item>
 			<Item class="ModuleScript" referent="5">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
@@ -1279,155 +1257,14 @@ return {
 					<string name="ScriptGuid">{d6322465-64e6-4050-865f-4862f5daac2f}</string>
 					<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local Bin = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "bin", "out").Bin
-local getAction = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "action-builder").getAction
-local ReplicatedStorage = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").ReplicatedStorage
---StaticData, val.data, previousResult, dat
-local sa = ReplicatedStorage:FindFirstChild("skill-actions", true)
-local _result = sa
-if _result ~= nil then
-	local _exp = _result:GetChildren()
-	-- ▼ ReadonlyArray.forEach ▼
-	local _callback = function(element)
-		require(element)
-	end
-	for _k, _v in _exp do
-		_callback(_v, _k - 1, _exp)
-	end
-	-- ▲ ReadonlyArray.forEach ▲
+local exports = {}
+for _k, _v in TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "main") or {} do
+	exports[_k] = _v
 end
-local SkillBuilder
-do
-	SkillBuilder = setmetatable({}, {
-		__tostring = function()
-			return "SkillBuilder"
-		end,
-	})
-	SkillBuilder.__index = SkillBuilder
-	function SkillBuilder.new(...)
-		local self = setmetatable({}, SkillBuilder)
-		return self:constructor(...) or self
-	end
-	function SkillBuilder:constructor()
-		self.currentIndex = -1
-		self.actionQueue = {}
-		self.saved = {}
-		self.invertedSaved = {}
-		self.useSavedDataFor = {}
-	end
-	function SkillBuilder:save(index)
-		local _saved = self.saved
-		local _index = index
-		local _currentIndex = self.currentIndex
-		_saved[_index] = _currentIndex
-		local _invertedSaved = self.invertedSaved
-		local _currentIndex_1 = self.currentIndex
-		local _index_1 = index
-		_invertedSaved[_currentIndex_1] = _index_1
-		return self
-	end
-	function SkillBuilder:load(index)
-		local _useSavedDataFor = self.useSavedDataFor
-		local _arg0 = self.currentIndex + 1
-		local obj = _useSavedDataFor[_arg0]
-		if obj then
-			local _index = index
-			table.insert(obj, _index)
-			return self
-		end
-		local _useSavedDataFor_1 = self.useSavedDataFor
-		local _arg0_1 = self.currentIndex + 1
-		local _arg1 = { index }
-		_useSavedDataFor_1[_arg0_1] = _arg1
-		return self
-	end
-	function SkillBuilder:queue(action, data)
-		if data == nil then
-			data = {}
-		end
-		print(action, data, "queueing")
-		local _actionQueue = self.actionQueue
-		local _arg0 = {
-			fn = getAction(action),
-			data = data,
-		}
-		table.insert(_actionQueue, _arg0)
-		self.currentIndex = #_actionQueue - 1
-		return self
-	end
-	function SkillBuilder:run(character)
-		warn("RUNNING!")
-		local StaticData = {
-			character = character,
-			bin = Bin.new(),
-		}
-		local stopNext = false
-		local curExecutionIndex = 0
-		local sequentialDataSave = {}
-		local previousResult
-		warn(self)
-		for i = 0, #self.actionQueue - 1 do
-			if stopNext then
-				return nil
-			end
-			curExecutionIndex = i
-			local _useSavedDataFor = self.useSavedDataFor
-			local _curExecutionIndex = curExecutionIndex
-			local savedDataIndex = _useSavedDataFor[_curExecutionIndex]
-			local saved = {}
-			if savedDataIndex ~= nil then
-				-- ▼ ReadonlyArray.forEach ▼
-				local _callback = function(v)
-					local _saved = self.saved
-					local _v = v
-					local saveIndex = _saved[_v]
-					if saveIndex ~= nil then
-						local dat = sequentialDataSave[saveIndex]
-						if dat == nil then
-							return nil
-						end
-						local _v_1 = v
-						saved[_v_1] = dat
-					end
-				end
-				for _k, _v in savedDataIndex do
-					_callback(_v, _k - 1, savedDataIndex)
-				end
-				-- ▲ ReadonlyArray.forEach ▲
-			end
-			local val = self.actionQueue[i + 1]
-			local s, r = pcall(val.fn, {
-				env = StaticData,
-				loaded = saved,
-				previous = previousResult,
-			})
-			repeat
-				local _fallthrough = false
-				if s == true then
-					local _invertedSaved = self.invertedSaved
-					local _curExecutionIndex_1 = curExecutionIndex
-					if _invertedSaved[_curExecutionIndex_1] ~= nil then
-						local _curExecutionIndex_2 = curExecutionIndex
-						sequentialDataSave[_curExecutionIndex_2] = r
-						warn("SAVED,r", r)
-					end
-					previousResult = r
-					break
-				end
-				if s == false then
-					error(r)
-				end
-			until true
-		end
-		return function()
-			stopNext = true
-			return stopNext
-		end
-	end
+for _k, _v in TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "action-builder") or {} do
+	exports[_k] = _v
 end
-return {
-	SkillBuilder = SkillBuilder,
-}
+return exports
 ]]></ProtectedString>
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
@@ -1482,14 +1319,197 @@ return {
 						<string name="ScriptGuid">{4dcf274e-8605-4b79-b348-4fc651ea017d}</string>
 						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local exports = {}
-for _k, _v in TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "main") or {} do
-	exports[_k] = _v
+local Bin = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "bin", "out").Bin
+local getAction = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "action-builder").getAction
+local ReplicatedStorage = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").ReplicatedStorage
+--StaticData, val.data, previousResult, dat
+local sa = ReplicatedStorage:FindFirstChild("skill-actions", true)
+local _result = sa
+if _result ~= nil then
+	local _exp = _result:GetChildren()
+	-- ▼ ReadonlyArray.forEach ▼
+	local _callback = function(element)
+		require(element)
+	end
+	for _k, _v in _exp do
+		_callback(_v, _k - 1, _exp)
+	end
+	-- ▲ ReadonlyArray.forEach ▲
 end
-for _k, _v in TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "action-builder") or {} do
-	exports[_k] = _v
+local SkillBuilder
+do
+	SkillBuilder = setmetatable({}, {
+		__tostring = function()
+			return "SkillBuilder"
+		end,
+	})
+	SkillBuilder.__index = SkillBuilder
+	function SkillBuilder.new(...)
+		local self = setmetatable({}, SkillBuilder)
+		return self:constructor(...) or self
+	end
+	function SkillBuilder:constructor()
+		self.currentIndex = -1
+		self.actionQueue = {}
+		self.saved = {}
+		self.invertedSaved = {}
+		self.useSavedDataFor = {}
+		self.afterFns = {}
+	end
+	function SkillBuilder:save(index)
+		local _saved = self.saved
+		local _index = index
+		local _currentIndex = self.currentIndex
+		_saved[_index] = _currentIndex
+		local _invertedSaved = self.invertedSaved
+		local _currentIndex_1 = self.currentIndex
+		local _index_1 = index
+		_invertedSaved[_currentIndex_1] = _index_1
+		return self
+	end
+	function SkillBuilder:load(index)
+		local _useSavedDataFor = self.useSavedDataFor
+		local _arg0 = self.currentIndex + 1
+		local obj = _useSavedDataFor[_arg0]
+		if obj then
+			local _index = index
+			table.insert(obj, _index)
+			return self
+		end
+		local _useSavedDataFor_1 = self.useSavedDataFor
+		local _arg0_1 = self.currentIndex + 1
+		local _arg1 = { index }
+		_useSavedDataFor_1[_arg0_1] = _arg1
+		return self
+	end
+	function SkillBuilder:queue(action, data)
+		if data == nil then
+			data = {}
+		end
+		print(action, data, "queueing")
+		local actFn = getAction(action)
+		local _actionQueue = self.actionQueue
+		local _arg0 = {
+			fn = actFn,
+			data = data,
+		}
+		table.insert(_actionQueue, _arg0)
+		self.currentIndex = #_actionQueue - 1
+		return self
+	end
+	function SkillBuilder:internalRun(StaticData, character)
+		warn("RUNNING!")
+		local stopNext = false
+		local curExecutionIndex = 0
+		local sequentialDataSave = {}
+		local previousResult
+		for i = 0, #self.actionQueue - 1 do
+			if stopNext then
+				return nil
+			end
+			curExecutionIndex = i
+			local _useSavedDataFor = self.useSavedDataFor
+			local _curExecutionIndex = curExecutionIndex
+			local savedDataIndex = _useSavedDataFor[_curExecutionIndex]
+			local saved = {}
+			if savedDataIndex ~= nil then
+				-- ▼ ReadonlyArray.forEach ▼
+				local _callback = function(v)
+					local _saved = self.saved
+					local _v = v
+					local saveIndex = _saved[_v]
+					if saveIndex ~= nil then
+						local dat = sequentialDataSave[saveIndex]
+						if dat == nil then
+							return nil
+						end
+						local _v_1 = v
+						saved[_v_1] = dat
+					end
+				end
+				for _k, _v in savedDataIndex do
+					_callback(_v, _k - 1, savedDataIndex)
+				end
+				-- ▲ ReadonlyArray.forEach ▲
+			end
+			local val = self.actionQueue[i + 1]
+			local s, r = pcall(val.fn, {
+				env = StaticData,
+				loaded = saved,
+				previous = previousResult,
+			})
+			repeat
+				local _fallthrough = false
+				if s == true then
+					local _invertedSaved = self.invertedSaved
+					local _curExecutionIndex_1 = curExecutionIndex
+					if _invertedSaved[_curExecutionIndex_1] ~= nil then
+						local _curExecutionIndex_2 = curExecutionIndex
+						sequentialDataSave[_curExecutionIndex_2] = r
+						warn("SAVED,r", r)
+					end
+					local _afterFns = self.afterFns
+					local _curExecutionIndex_2 = curExecutionIndex
+					local arr = _afterFns[_curExecutionIndex_2]
+					if arr then
+						-- ▼ ReadonlyArray.forEach ▼
+						local _callback = function(v)
+							return v(StaticData)
+						end
+						for _k, _v in arr do
+							_callback(_v, _k - 1, arr)
+						end
+						-- ▲ ReadonlyArray.forEach ▲
+					end
+					previousResult = r
+					break
+				end
+				if s == false then
+					error(r)
+				end
+			until true
+		end
+		return function()
+			stopNext = true
+			return stopNext
+		end
+	end
+	function SkillBuilder:after(fn)
+		local _afterFns = self.afterFns
+		local _currentIndex = self.currentIndex
+		if _afterFns[_currentIndex] ~= nil then
+			local _afterFns_1 = self.afterFns
+			local _currentIndex_1 = self.currentIndex
+			local _result_1 = _afterFns_1[_currentIndex_1]
+			if _result_1 ~= nil then
+				local _fn = fn
+				table.insert(_result_1, _fn)
+			end
+		else
+			local _afterFns_1 = self.afterFns
+			local _currentIndex_1 = self.currentIndex
+			local _arg1 = { fn }
+			_afterFns_1[_currentIndex_1] = _arg1
+		end
+		return self
+	end
+	function SkillBuilder:run(character)
+		local StaticData = {
+			character = character,
+			bin = Bin.new(),
+		}
+		TS.try(function()
+			self:internalRun(StaticData, character)
+		end, function(error)
+			warn(error, "fail!")
+		end, function()
+			StaticData.bin:destroy()
+		end)
+	end
 end
-return exports
+return {
+	SkillBuilder = SkillBuilder,
+}
 ]]></ProtectedString>
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
@@ -1520,20 +1540,32 @@ return exports
 						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local addAction = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "action-builder").addAction
+addAction("blank", function(obj)
+	return {}
+end)
 addAction("actiontest", function(obj)
-	print("HI! TEST ACTION RUNNING!", obj)
+	obj.env.character:SetAttribute("DidAction1", true)
+	obj.env.bin:add(function()
+		return obj.env.character:SetAttribute("DidAction1", nil)
+	end)
 	return {
 		isAction1 = true,
 	}
 end)
 addAction("actiontest2", function(obj)
-	print("HI! TEST ACTION 2 RUNNING!", obj)
+	local c = obj.env.character
+	if c:GetAttribute("DidAction1") == nil then
+		error("DID NOT DO ACTION1")
+	end
 	return {
 		isAction2 = true,
 	}
 end)
 addAction("actiontest3", function(obj)
-	print("HI! TEST ACTION 3 RUNNING!", obj)
+	if obj.previous == nil then
+		error("CANNOT BE FIRST")
+	end
+	print("HI! TEST ACTION 3 RUNNING!", (obj.loaded.testactionData))
 	return {
 		isAction3 = true,
 	}
@@ -1568,8 +1600,14 @@ return nil
 						<string name="ScriptGuid">{5a60dbaa-f56b-46fe-8710-7c327cd658b7}</string>
 						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local SkillBuilder = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder").SkillBuilder
-local SkillTest = SkillBuilder.new():queue("actiontest"):save("testactionData"):queue("actiontest2"):load("testactionData"):queue("actiontest3")
+local SkillBuilder = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "main").SkillBuilder
+local SkillTest = SkillBuilder.new():queue("blank"):after(function(StaticData)
+	StaticData.bin:destroy()
+	task.wait(3)
+	print("cleaned up before action test")
+end):queue("actiontest"):after(function(StaticData)
+	return print(StaticData, "STATIC!")
+end):save("testactionData"):queue("actiontest2"):load("testactionData"):queue("actiontest3")
 return {
 	SkillTest = SkillTest,
 }
@@ -12613,7 +12651,7 @@ return {
 			</Color3>
 			<BinaryString name="AttributesSerialize"><![CDATA[BAAAABQAAABSQlhfQmFja3VwQnJpZ2h0bmVzcwUAAIA/HgAAAFJCWF9CYWNrdXBFeHBvc3Vy
 ZUNvbXBlbnNhdGlvbgUAAAAAIQAAAFJCWF9MaWdodGluZ0NvbXBhdGliaWxpdHlNaWdyYXRl
-ZAMBIAAAAFJCWF9PcmlnaW5hbFRlY2hub2xvZ3lPbkZpbGVMb2FkBAIAAAA=]]></BinaryString>
+ZAMBIAAAAFJCWF9PcmlnaW5hbFRlY2hub2xvZ3lPbkZpbGVMb2FkBAEAAAA=]]></BinaryString>
 			<float name="Brightness">1.98124921</float>
 			<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 			<Color3 name="ColorShift_Bottom">

@@ -26,6 +26,9 @@ importers:
       '@rbxts/services':
         specifier: ^1.5.5
         version: 1.5.5
+      '@rbxts/t':
+        specifier: ^3.2.1
+        version: 3.2.1
     devDependencies:
       '@rbxts/compiler-types':
         specifier: 3.0.0-types.0

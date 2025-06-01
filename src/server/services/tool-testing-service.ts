@@ -1,6 +1,6 @@
 import { OnStart, Service } from "@flamework/core";
 import { Players } from "@rbxts/services";
-import { SkillTest } from "shared/skills/test-skills";
+import { TestSkill } from "shared/skills/test-skills";
 
 @Service()
 export class ToolGiver implements OnStart {
@@ -8,7 +8,11 @@ export class ToolGiver implements OnStart {
 		Players.PlayerAdded.Connect((p) => {
 			p.Character || p.CharacterAdded.Wait()[0];
 			const tool = new Instance("Tool");
-			tool.Activated.Connect(() => SkillTest.run(tool.Parent as Instance));
+			tool.Activated.Connect(() =>
+				TestSkill.run({
+					["character"]: tool.Parent as Instance,
+				}),
+			);
 			tool.RequiresHandle = false;
 			tool.Parent = p.WaitForChild("Backpack");
 		});
