@@ -1,4 +1,4 @@
-import { SkillBuilder } from "shared/new-skill-builder/main/skill-builder";
+import { SkillBuilder } from "shared/skill-builder/main/skill-builder";
 
 export const TestSkill = new SkillBuilder()
 	.after((p) => {
