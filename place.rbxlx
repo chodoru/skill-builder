@@ -82,18 +82,18 @@
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>0</X>
-					<Y>20</Y>
-					<Z>20</Z>
-					<R00>1</R00>
-					<R01>0</R01>
-					<R02>-0</R02>
-					<R10>-0</R10>
-					<R11>0.780868828</R11>
-					<R12>0.624695063</R12>
-					<R20>0</R20>
-					<R21>-0.624695063</R21>
-					<R22>0.780868828</R22>
+					<X>27.0690022</X>
+					<Y>20.5154305</Y>
+					<Z>2.78427339</Z>
+					<R00>-0.98228693</R00>
+					<R01>-0.0330539234</R01>
+					<R02>0.184444681</R02>
+					<R10>-3.7252903e-09</R10>
+					<R11>0.984318972</R11>
+					<R12>0.176397607</R12>
+					<R20>-0.187383041</R20>
+					<R21>0.173273057</R21>
+					<R22>-0.966883659</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
@@ -102,9 +102,9 @@
 				<float name="FieldOfView">70</float>
 				<token name="FieldOfViewMode">0</token>
 				<CoordinateFrame name="Focus">
-					<X>0</X>
-					<Y>0</Y>
-					<Z>-5</Z>
+					<X>26.7001114</X>
+					<Y>20.1626339</Y>
+					<Z>4.7180481</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -1246,7 +1246,115 @@ return {
 					<UniqueId name="UniqueId">5cf9ac95759887ba084b95d90000038d</UniqueId>
 				</Properties>
 			</Item>
-			<Item class="ModuleScript" referent="6">
+			<Item class="Folder" referent="RBXe1320ef9ff2d483db7dd152b15fb9a39">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<string name="Name">skills</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<UniqueId name="UniqueId">31538aa351eccc22084e0a7a000078ce</UniqueId>
+				</Properties>
+				<Item class="ModuleScript" referent="RBX3f264911ec1e438b8a5e9500e53d69d9">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">test-skill</string>
+						<string name="ScriptGuid">{281830bc-8d0c-4f67-90a1-627637b743d0}</string>
+						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local _grabs = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-actions", "grabs")
+local messageReceiveAction = _grabs.messageReceiveAction
+local messageSendAction = _grabs.messageSendAction
+local SkillBuilder = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder").SkillBuilder
+local TestSkill = SkillBuilder.new():gotoIndex("initial"):action(messageSendAction, {
+	message = "shalom",
+}):async(function(s, params, prev)
+	local m = prev
+	print("earing in on the message", m.message)
+end):call(function(s, params, prev)
+	local _condition = s.data.amount
+	if _condition == nil then
+		_condition = 0
+	end
+	s.data.amount = _condition
+	print("middlewared", prev)
+	s:next(prev)
+end):action(messageReceiveAction, nil):call(function(s)
+	local willExit = math.random(1, 5) == 5
+	warn("will exit?", willExit, s.data)
+	local _result
+	if willExit then
+		_result = s:exit()
+	else
+		local _s = s
+		local _object = {}
+		local _left = "num"
+		s.data.amount += 1
+		_object[_left] = s.data.amount
+		_object.exitNum = willExit
+		_result = _s:goto("initial", _object)
+	end
+	return _result
+end)
+return {
+	TestSkill = TestSkill,
+}
+]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">6ee2b84d2b033be80850e44e00007784</UniqueId>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Folder" referent="RBXc809313cbcdb4e1ba5fe5acc8789b36a">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<string name="Name">skill-actions</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<UniqueId name="UniqueId">6ee2b84d2b033be80850e44e0000777a</UniqueId>
+				</Properties>
+				<Item class="ModuleScript" referent="RBX411e67f02fa74d8991a543816ffa2b3f">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">grabs</string>
+						<string name="ScriptGuid">{548d3334-7a8f-4db1-89e0-5f52b09b2cf8}</string>
+						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+local function messageSendAction(skillBuilder, params)
+	skillBuilder:next({
+		message = params.message,
+	})
+end
+local function messageReceiveAction(skillBuilder, params, previous)
+	local m = previous
+	print(m.message)
+	skillBuilder:next()
+end
+return {
+	messageSendAction = messageSendAction,
+	messageReceiveAction = messageReceiveAction,
+}
+]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">6ee2b84d2b033be80850e44e00007782</UniqueId>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="ModuleScript" referent="RBXa7e2137d451a473688e548aa370c16ef">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -1254,61 +1362,20 @@ return {
 					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">skill-builder</string>
-					<string name="ScriptGuid">{d6322465-64e6-4050-865f-4862f5daac2f}</string>
+					<string name="ScriptGuid">{f47b0b5b-e849-41a8-90b0-7fde2698e39a}</string>
 					<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local exports = {}
 for _k, _v in TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "main") or {} do
 	exports[_k] = _v
 end
-for _k, _v in TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "action-builder") or {} do
-	exports[_k] = _v
-end
 return exports
 ]]></ProtectedString>
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
-					<UniqueId name="UniqueId">5cf9ac95759887ba084b95d90000038e</UniqueId>
+					<UniqueId name="UniqueId">6ee2b84d2b033be80850e44e00007780</UniqueId>
 				</Properties>
-				<Item class="ModuleScript" referent="7">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-						<bool name="DefinesCapabilities">false</bool>
-						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">action-builder</string>
-						<string name="ScriptGuid">{1854ef91-ff68-4b98-96ac-bd6b378c2aa9}</string>
-						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
-local actions = {}
-local function addAction(action, fn)
-	local _action = action
-	if actions[_action] ~= nil then
-		error("ACTION " .. action .. " ALREADY EXISTS!")
-	end
-	local _action_1 = action
-	local _fn = fn
-	actions[_action_1] = _fn
-end
-local function getAction(action)
-	local _action = action
-	if not (actions[_action] ~= nil) then
-		error("ACTION " .. action .. " DOES NOT EXIST!")
-	end
-	local _action_1 = action
-	return actions[_action_1]
-end
-return {
-	addAction = addAction,
-	getAction = getAction,
-}
-]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-						<UniqueId name="UniqueId">5cf9ac95759887ba084b95d90000038f</UniqueId>
-					</Properties>
-				</Item>
-				<Item class="ModuleScript" referent="8">
+				<Item class="ModuleScript" referent="RBX8c4010610c4c4bcba1481d998079b3ef">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -1316,25 +1383,22 @@ return {
 						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
 						<Content name="LinkedSource"><null></null></Content>
 						<string name="Name">main</string>
-						<string name="ScriptGuid">{4dcf274e-8605-4b79-b348-4fc651ea017d}</string>
+						<string name="ScriptGuid">{e4ec26cd-a7df-4cc3-9198-2e2a8b5985ac}</string>
 						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Bin = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "bin", "out").Bin
-local getAction = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "action-builder").getAction
-local ReplicatedStorage = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").ReplicatedStorage
---StaticData, val.data, previousResult, dat
-local sa = ReplicatedStorage:FindFirstChild("skill-actions", true)
-local _result = sa
-if _result ~= nil then
-	local _exp = _result:GetChildren()
-	-- ▼ ReadonlyArray.forEach ▼
-	local _callback = function(element)
-		require(element)
-	end
-	for _k, _v in _exp do
-		_callback(_v, _k - 1, _exp)
-	end
-	-- ▲ ReadonlyArray.forEach ▲
+local InstructionType
+do
+	local _inverse = {}
+	InstructionType = setmetatable({}, {
+		__index = _inverse,
+	})
+	InstructionType.Goto = 0
+	_inverse[0] = "Goto"
+	InstructionType.Async = 1
+	_inverse[1] = "Async"
+	InstructionType.Sync = 2
+	_inverse[2] = "Sync"
 end
 local SkillBuilder
 do
@@ -1349,272 +1413,134 @@ do
 		return self:constructor(...) or self
 	end
 	function SkillBuilder:constructor()
-		self.currentIndex = -1
-		self.actionQueue = {}
-		self.saved = {}
-		self.invertedSaved = {}
-		self.useSavedDataFor = {}
-		self.afterFns = {}
+		self.sequence = {}
 	end
-	function SkillBuilder:save(index)
-		local _saved = self.saved
-		local _index = index
-		local _currentIndex = self.currentIndex
-		_saved[_index] = _currentIndex
-		local _invertedSaved = self.invertedSaved
-		local _currentIndex_1 = self.currentIndex
-		local _index_1 = index
-		_invertedSaved[_currentIndex_1] = _index_1
+	function SkillBuilder:getSequence()
+		return self.sequence
+	end
+	function SkillBuilder:implSchedule(data)
+		local _sequence = self.sequence
+		local _data = data
+		table.insert(_sequence, _data)
+	end
+	function SkillBuilder:action(fn, passedParams)
+		self:implSchedule({
+			instructionType = InstructionType.Sync,
+			fn = fn,
+			params = passedParams,
+		})
 		return self
 	end
-	function SkillBuilder:load(index)
-		local _useSavedDataFor = self.useSavedDataFor
-		local _arg0 = self.currentIndex + 1
-		local obj = _useSavedDataFor[_arg0]
-		if obj then
-			local _index = index
-			table.insert(obj, _index)
-			return self
-		end
-		local _useSavedDataFor_1 = self.useSavedDataFor
-		local _arg0_1 = self.currentIndex + 1
-		local _arg1 = { index }
-		_useSavedDataFor_1[_arg0_1] = _arg1
+	function SkillBuilder:call(fn)
+		self:implSchedule({
+			instructionType = InstructionType.Sync,
+			fn = fn,
+			params = nil,
+		})
 		return self
 	end
-	function SkillBuilder:queue(action, data)
-		if data == nil then
-			data = {}
-		end
-		print(action, data, "queueing")
-		local actFn = getAction(action)
-		local _actionQueue = self.actionQueue
-		local _arg0 = {
-			fn = actFn,
-			data = data,
-		}
-		table.insert(_actionQueue, _arg0)
-		self.currentIndex = #_actionQueue - 1
+	function SkillBuilder:async(fn)
+		self:implSchedule({
+			instructionType = InstructionType.Async,
+			fn = fn,
+			params = nil,
+		})
 		return self
 	end
-	function SkillBuilder:internalRun(StaticData, character)
-		warn("RUNNING!")
-		local stopNext = false
-		local curExecutionIndex = 0
-		local sequentialDataSave = {}
-		local previousResult
-		for i = 0, #self.actionQueue - 1 do
-			if stopNext then
+	function SkillBuilder:gotoIndex(index)
+		self:implSchedule({
+			instructionType = InstructionType.Goto,
+			fn = function(s)
 				return nil
-			end
-			curExecutionIndex = i
-			local _useSavedDataFor = self.useSavedDataFor
-			local _curExecutionIndex = curExecutionIndex
-			local savedDataIndex = _useSavedDataFor[_curExecutionIndex]
-			local saved = {}
-			if savedDataIndex ~= nil then
-				-- ▼ ReadonlyArray.forEach ▼
-				local _callback = function(v)
-					local _saved = self.saved
-					local _v = v
-					local saveIndex = _saved[_v]
-					if saveIndex ~= nil then
-						local dat = sequentialDataSave[saveIndex]
-						if dat == nil then
-							return nil
-						end
-						local _v_1 = v
-						saved[_v_1] = dat
-					end
-				end
-				for _k, _v in savedDataIndex do
-					_callback(_v, _k - 1, savedDataIndex)
-				end
-				-- ▲ ReadonlyArray.forEach ▲
-			end
-			local val = self.actionQueue[i + 1]
-			local s, r = pcall(val.fn, {
-				env = StaticData,
-				loaded = saved,
-				previous = previousResult,
-			})
-			repeat
-				local _fallthrough = false
-				if s == true then
-					local _invertedSaved = self.invertedSaved
-					local _curExecutionIndex_1 = curExecutionIndex
-					if _invertedSaved[_curExecutionIndex_1] ~= nil then
-						local _curExecutionIndex_2 = curExecutionIndex
-						sequentialDataSave[_curExecutionIndex_2] = r
-						warn("SAVED,r", r)
-					end
-					local _afterFns = self.afterFns
-					local _curExecutionIndex_2 = curExecutionIndex
-					local arr = _afterFns[_curExecutionIndex_2]
-					if arr then
-						-- ▼ ReadonlyArray.forEach ▼
-						local _callback = function(v)
-							return v(StaticData)
-						end
-						for _k, _v in arr do
-							_callback(_v, _k - 1, arr)
-						end
-						-- ▲ ReadonlyArray.forEach ▲
-					end
-					previousResult = r
-					break
-				end
-				if s == false then
-					error(r)
-				end
-			until true
-		end
-		return function()
-			stopNext = true
-			return stopNext
-		end
-	end
-	function SkillBuilder:after(fn)
-		local _afterFns = self.afterFns
-		local _currentIndex = self.currentIndex
-		if _afterFns[_currentIndex] ~= nil then
-			local _afterFns_1 = self.afterFns
-			local _currentIndex_1 = self.currentIndex
-			local _result_1 = _afterFns_1[_currentIndex_1]
-			if _result_1 ~= nil then
-				local _fn = fn
-				table.insert(_result_1, _fn)
-			end
-		else
-			local _afterFns_1 = self.afterFns
-			local _currentIndex_1 = self.currentIndex
-			local _arg1 = { fn }
-			_afterFns_1[_currentIndex_1] = _arg1
-		end
+			end,
+			params = {
+				gotoIndex = index,
+			},
+		})
 		return self
 	end
-	function SkillBuilder:run(character)
-		local StaticData = {
-			character = character,
-			bin = Bin.new(),
-		}
-		TS.try(function()
-			self:internalRun(StaticData, character)
-		end, function(error)
-			warn(error, "fail!")
-		end, function()
-			StaticData.bin:destroy()
-		end)
+end
+local SkillRunner
+do
+	SkillRunner = setmetatable({}, {
+		__tostring = function()
+			return "SkillRunner"
+		end,
+	})
+	SkillRunner.__index = SkillRunner
+	function SkillRunner.new(...)
+		local self = setmetatable({}, SkillRunner)
+		return self:constructor(...) or self
+	end
+	function SkillRunner:constructor(builder, initParams)
+		self.builder = builder
+		self.initParams = initParams
+		self.currentIndex = -1
+		self.data = {}
+		self.bin = Bin.new()
+		self.sequence = builder:getSequence()
+		self:next()
+	end
+	function SkillRunner:exit()
+		self.bin:destroy()
+		self.currentIndex = -1
+		return nil
+	end
+	SkillRunner.run = TS.async(function(self, args)
+		local val = self.sequence[self.currentIndex + 1]
+		if val.instructionType == InstructionType.Goto then
+			return self:next(args)
+		end
+		if val.instructionType == InstructionType.Async then
+			val.fn(self, nil, args)
+			return self:next(args)
+		end
+		val.fn(self, val.params, args)
+	end)
+	function SkillRunner:next(args)
+		self.currentIndex += 1
+		self:run(args)
+		return self
+	end
+	function SkillRunner:goto(index, args)
+		local _exp = self.sequence
+		-- ▼ ReadonlyArray.findIndex ▼
+		local _callback = function(v)
+			local entry = v
+			local _condition = entry.instructionType == InstructionType.Goto
+			if _condition then
+				local _result = entry.params
+				if _result ~= nil then
+					_result = _result.gotoIndex
+				end
+				_condition = _result == index
+			end
+			return _condition
+		end
+		local _result = -1
+		for _i, _v in _exp do
+			if _callback(_v, _i - 1, _exp) == true then
+				_result = _i - 1
+				break
+			end
+		end
+		-- ▲ ReadonlyArray.findIndex ▲
+		local i = _result
+		local _arg0 = i > -1
+		assert(_arg0, "could not perform goto, index is missing")
+		self.currentIndex = i
+		self:run(args)
+		return self
 	end
 end
 return {
 	SkillBuilder = SkillBuilder,
+	SkillRunner = SkillRunner,
 }
 ]]></ProtectedString>
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
-						<UniqueId name="UniqueId">5cf9ac95759887ba084b95d900000390</UniqueId>
-					</Properties>
-				</Item>
-			</Item>
-			<Item class="Folder" referent="RBXd55d86a07df3450f933fcf8e48144704">
-				<Properties>
-					<BinaryString name="AttributesSerialize"></BinaryString>
-					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-					<bool name="DefinesCapabilities">false</bool>
-					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-					<string name="Name">skill-actions</string>
-					<int64 name="SourceAssetId">-1</int64>
-					<BinaryString name="Tags"></BinaryString>
-					<UniqueId name="UniqueId">5cf9ac95759887ba084b95d900007596</UniqueId>
-				</Properties>
-				<Item class="ModuleScript" referent="RBX7a90b16e4c334674b5193fdd584a055d">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-						<bool name="DefinesCapabilities">false</bool>
-						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">test-actions</string>
-						<string name="ScriptGuid">{2fd18edf-a5e4-4af6-8472-2aedf553d3c4}</string>
-						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
-local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local addAction = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "action-builder").addAction
-addAction("blank", function(obj)
-	return {}
-end)
-addAction("actiontest", function(obj)
-	obj.env.character:SetAttribute("DidAction1", true)
-	obj.env.bin:add(function()
-		return obj.env.character:SetAttribute("DidAction1", nil)
-	end)
-	return {
-		isAction1 = true,
-	}
-end)
-addAction("actiontest2", function(obj)
-	local c = obj.env.character
-	if c:GetAttribute("DidAction1") == nil then
-		error("DID NOT DO ACTION1")
-	end
-	return {
-		isAction2 = true,
-	}
-end)
-addAction("actiontest3", function(obj)
-	if obj.previous == nil then
-		error("CANNOT BE FIRST")
-	end
-	print("HI! TEST ACTION 3 RUNNING!", (obj.loaded.testactionData))
-	return {
-		isAction3 = true,
-	}
-end)
-return nil
-]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-						<UniqueId name="UniqueId">5cf9ac95759887ba084b95d900007597</UniqueId>
-					</Properties>
-				</Item>
-			</Item>
-			<Item class="Folder" referent="RBX1defbc5567fd4f49a5d0e85e5eea503b">
-				<Properties>
-					<BinaryString name="AttributesSerialize"></BinaryString>
-					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-					<bool name="DefinesCapabilities">false</bool>
-					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-					<string name="Name">skills</string>
-					<int64 name="SourceAssetId">-1</int64>
-					<BinaryString name="Tags"></BinaryString>
-					<UniqueId name="UniqueId">5cf9ac95759887ba084b95d90000759a</UniqueId>
-				</Properties>
-				<Item class="ModuleScript" referent="RBX74a9b249c4564fbbad25d48fb00f015e">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-						<bool name="DefinesCapabilities">false</bool>
-						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">test-skills</string>
-						<string name="ScriptGuid">{5a60dbaa-f56b-46fe-8710-7c327cd658b7}</string>
-						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
-local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local SkillBuilder = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder", "main").SkillBuilder
-local SkillTest = SkillBuilder.new():queue("blank"):after(function(StaticData)
-	StaticData.bin:destroy()
-	task.wait(3)
-	print("cleaned up before action test")
-end):queue("actiontest"):after(function(StaticData)
-	return print(StaticData, "STATIC!")
-end):save("testactionData"):queue("actiontest2"):load("testactionData"):queue("actiontest3")
-return {
-	SkillTest = SkillTest,
-}
-]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-						<UniqueId name="UniqueId">5cf9ac95759887ba084b95d90000759b</UniqueId>
+						<UniqueId name="UniqueId">6ee2b84d2b033be80850e44e0000777b</UniqueId>
 					</Properties>
 				</Item>
 			</Item>
@@ -5284,6 +5210,1318 @@ return {
 									<BinaryString name="Tags"></BinaryString>
 									<UniqueId name="UniqueId">5cf9ac95759887ba084b95d90000039b</UniqueId>
 								</Properties>
+							</Item>
+						</Item>
+						<Item class="Folder" referent="RBXfac8ba82096c4741ba3a1f5aae4e2d3a">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+								<string name="Name">node_modules</string>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+								<UniqueId name="UniqueId">4db7e10cda041d1f085077e100007e68</UniqueId>
+							</Properties>
+							<Item class="Folder" referent="RBXa6ab3688b6214c50bcde26ad855dd989">
+								<Properties>
+									<BinaryString name="AttributesSerialize"></BinaryString>
+									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+									<bool name="DefinesCapabilities">false</bool>
+									<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+									<string name="Name">@rbxts</string>
+									<int64 name="SourceAssetId">-1</int64>
+									<BinaryString name="Tags"></BinaryString>
+									<UniqueId name="UniqueId">4db7e10cda041d1f085077e100007e69</UniqueId>
+								</Properties>
+								<Item class="Folder" referent="RBX9f7915ae5d7348c9922a51a5d5baf327">
+									<Properties>
+										<BinaryString name="AttributesSerialize"></BinaryString>
+										<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+										<bool name="DefinesCapabilities">false</bool>
+										<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+										<string name="Name">t</string>
+										<int64 name="SourceAssetId">-1</int64>
+										<BinaryString name="Tags"></BinaryString>
+										<UniqueId name="UniqueId">4db7e10cda041d1f085077e100007e6a</UniqueId>
+									</Properties>
+									<Item class="Folder" referent="RBX270cc7fd109d4ee1b23aaa6bc329fcf6">
+										<Properties>
+											<BinaryString name="AttributesSerialize"></BinaryString>
+											<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+											<bool name="DefinesCapabilities">false</bool>
+											<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+											<string name="Name">lib</string>
+											<int64 name="SourceAssetId">-1</int64>
+											<BinaryString name="Tags"></BinaryString>
+											<UniqueId name="UniqueId">4db7e10cda041d1f085077e100007e6b</UniqueId>
+										</Properties>
+										<Item class="ModuleScript" referent="RBX6150780239694e7087f937a69e5d9da0">
+											<Properties>
+												<BinaryString name="AttributesSerialize"></BinaryString>
+												<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+												<bool name="DefinesCapabilities">false</bool>
+												<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+												<Content name="LinkedSource"><null></null></Content>
+												<string name="Name">ts</string>
+												<string name="ScriptGuid">{c5694ccb-0063-442a-a325-9c2d0785c388}</string>
+												<ProtectedString name="Source"><![CDATA[-- t: a runtime typechecker for Roblox
+
+local t = {}
+
+function t.type(typeName)
+	return function(value)
+		local valueType = type(value)
+		if valueType == typeName then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+function t.typeof(typeName)
+	return function(value)
+		local valueType = typeof(value)
+		if valueType == typeName then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	matches any type except nil
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.any(value)
+	if value ~= nil then
+		return true
+	else
+		return false
+	end
+end
+
+--Lua primitives
+
+--[[**
+	ensures Lua primitive boolean type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.boolean = t.typeof("boolean")
+
+--[[**
+	ensures Lua primitive thread type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.thread = t.typeof("thread")
+
+--[[**
+	ensures Lua primitive callback type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.callback = t.typeof("function")
+t["function"] = t.callback
+
+--[[**
+	ensures Lua primitive none type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.none = t.typeof("nil")
+t["nil"] = t.none
+
+--[[**
+	ensures Lua primitive string type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.string = t.typeof("string")
+
+--[[**
+	ensures Lua primitive table type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.table = t.typeof("table")
+
+--[[**
+	ensures Lua primitive userdata type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.userdata = t.type("userdata")
+
+--[[**
+	ensures value is a number and non-NaN
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.number(value)
+	local valueType = typeof(value)
+	if valueType == "number" then
+		if value == value then
+			return true
+		else
+			return false
+		end
+	else
+		return false
+	end
+end
+
+--[[**
+	ensures value is NaN
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.nan(value)
+	local valueType = typeof(value)
+	if valueType == "number" then
+		if value ~= value then
+			return true
+		else
+			return false
+		end
+	else
+		return false
+	end
+end
+
+-- roblox types
+
+--[[**
+	ensures Roblox Axes type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Axes = t.typeof("Axes")
+
+--[[**
+	ensures Roblox BrickColor type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.BrickColor = t.typeof("BrickColor")
+
+--[[**
+	ensures Roblox CatalogSearchParams type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.CatalogSearchParams = t.typeof("CatalogSearchParams")
+
+--[[**
+	ensures Roblox CFrame type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.CFrame = t.typeof("CFrame")
+
+--[[**
+	ensures Roblox Color3 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Color3 = t.typeof("Color3")
+
+--[[**
+	ensures Roblox ColorSequence type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.ColorSequence = t.typeof("ColorSequence")
+
+--[[**
+	ensures Roblox ColorSequenceKeypoint type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.ColorSequenceKeypoint = t.typeof("ColorSequenceKeypoint")
+
+--[[**
+	ensures Roblox DateTime type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.DateTime = t.typeof("DateTime")
+
+--[[**
+	ensures Roblox DockWidgetPluginGuiInfo type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.DockWidgetPluginGuiInfo = t.typeof("DockWidgetPluginGuiInfo")
+
+--[[**
+	ensures Roblox Enum type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Enum = t.typeof("Enum")
+
+--[[**
+	ensures Roblox EnumItem type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.EnumItem = t.typeof("EnumItem")
+
+--[[**
+	ensures Roblox Enums type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Enums = t.typeof("Enums")
+
+--[[**
+	ensures Roblox Faces type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Faces = t.typeof("Faces")
+
+--[[**
+	ensures Roblox Instance type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Instance = t.typeof("Instance")
+
+--[[**
+	ensures Roblox NumberRange type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.NumberRange = t.typeof("NumberRange")
+
+--[[**
+	ensures Roblox NumberSequence type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.NumberSequence = t.typeof("NumberSequence")
+
+--[[**
+	ensures Roblox NumberSequenceKeypoint type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.NumberSequenceKeypoint = t.typeof("NumberSequenceKeypoint")
+
+--[[**
+	ensures Roblox PathWaypoint type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.PathWaypoint = t.typeof("PathWaypoint")
+
+--[[**
+	ensures Roblox PhysicalProperties type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.PhysicalProperties = t.typeof("PhysicalProperties")
+
+--[[**
+	ensures Roblox Random type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Random = t.typeof("Random")
+
+--[[**
+	ensures Roblox Ray type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Ray = t.typeof("Ray")
+
+--[[**
+	ensures Roblox RaycastParams type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RaycastParams = t.typeof("RaycastParams")
+
+--[[**
+	ensures Roblox RaycastResult type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RaycastResult = t.typeof("RaycastResult")
+
+--[[**
+	ensures Roblox RBXScriptConnection type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RBXScriptConnection = t.typeof("RBXScriptConnection")
+
+--[[**
+	ensures Roblox RBXScriptSignal type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RBXScriptSignal = t.typeof("RBXScriptSignal")
+
+--[[**
+	ensures Roblox Rect type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Rect = t.typeof("Rect")
+
+--[[**
+	ensures Roblox Region3 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Region3 = t.typeof("Region3")
+
+--[[**
+	ensures Roblox Region3int16 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Region3int16 = t.typeof("Region3int16")
+
+--[[**
+	ensures Roblox TweenInfo type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.TweenInfo = t.typeof("TweenInfo")
+
+--[[**
+	ensures Roblox UDim type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.UDim = t.typeof("UDim")
+
+--[[**
+	ensures Roblox UDim2 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.UDim2 = t.typeof("UDim2")
+
+--[[**
+	ensures Roblox Vector2 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector2 = t.typeof("Vector2")
+
+--[[**
+	ensures Roblox Vector2int16 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector2int16 = t.typeof("Vector2int16")
+
+--[[**
+	ensures Roblox Vector3 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector3 = t.typeof("Vector3")
+
+--[[**
+	ensures Roblox Vector3int16 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector3int16 = t.typeof("Vector3int16")
+
+--[[**
+	ensures value is a given literal value
+
+	@param literal The literal to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.literal(...)
+	local size = select("#", ...)
+	if size == 1 then
+		local literal = ...
+		return function(value)
+			if value ~= literal then
+				return false
+			end
+
+			return true
+		end
+	else
+		local literals = {}
+		for i = 1, size do
+			local value = select(i, ...)
+			literals[i] = t.literal(value)
+		end
+
+		return t.union(table.unpack(literals, 1, size))
+	end
+end
+
+--[[**
+	DEPRECATED
+	Please use t.literal
+**--]]
+t.exactly = t.literal
+
+--[[**
+	Returns a t.union of each key in the table as a t.literal
+
+	@param keyTable The table to get keys from
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.keyOf(keyTable)
+	local keys = {}
+	local length = 0
+	for key in pairs(keyTable) do
+		length = length + 1
+		keys[length] = key
+	end
+
+	return t.literal(table.unpack(keys, 1, length))
+end
+
+--[[**
+	Returns a t.union of each value in the table as a t.literal
+
+	@param valueTable The table to get values from
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.valueOf(valueTable)
+	local values = {}
+	local length = 0
+	for _, value in pairs(valueTable) do
+		length = length + 1
+		values[length] = value
+	end
+
+	return t.literal(table.unpack(values, 1, length))
+end
+
+--[[**
+	ensures value is an integer
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.integer(value)
+	local success = t.number(value)
+	if not success then
+		return false
+	end
+
+	if value % 1 == 0 then
+		return true
+	else
+		return false
+	end
+end
+
+--[[**
+	ensures value is a number where min <= value
+
+	@param min The minimum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMin(min)
+	return function(value)
+		local success = t.number(value)
+		if not success then
+			return false
+		end
+
+		if value >= min then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where value <= max
+
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMax(max)
+	return function(value)
+		local success = t.number(value)
+		if not success then
+			return false
+		end
+
+		if value <= max then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where min < value
+
+	@param min The minimum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMinExclusive(min)
+	return function(value)
+		local success = t.number(value)
+		if not success then
+			return false
+		end
+
+		if min < value then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where value < max
+
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMaxExclusive(max)
+	return function(value)
+		local success = t.number(value)
+		if not success then
+			return false
+		end
+
+		if value < max then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where value > 0
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+t.numberPositive = t.numberMinExclusive(0)
+
+--[[**
+	ensures value is a number where value < 0
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+t.numberNegative = t.numberMaxExclusive(0)
+
+--[[**
+	ensures value is a number where min <= value <= max
+
+	@param min The minimum to use
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberConstrained(min, max)
+	assert(t.number(min))
+	assert(t.number(max))
+	local minCheck = t.numberMin(min)
+	local maxCheck = t.numberMax(max)
+
+	return function(value)
+		local minSuccess = minCheck(value)
+		if not minSuccess then
+			return false
+		end
+
+		local maxSuccess = maxCheck(value)
+		if not maxSuccess then
+			return false
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is a number where min < value < max
+
+	@param min The minimum to use
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberConstrainedExclusive(min, max)
+	assert(t.number(min))
+	assert(t.number(max))
+	local minCheck = t.numberMinExclusive(min)
+	local maxCheck = t.numberMaxExclusive(max)
+
+	return function(value)
+		local minSuccess = minCheck(value)
+		if not minSuccess then
+			return false
+		end
+
+		local maxSuccess = maxCheck(value)
+		if not maxSuccess then
+			return false
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value matches string pattern
+
+	@param string pattern to check against
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.match(pattern)
+	assert(t.string(pattern))
+	return function(value)
+		local stringSuccess = t.string(value)
+		if not stringSuccess then
+			return false
+		end
+
+		if string.match(value, pattern) == nil then
+			return false
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is either nil or passes check
+
+	@param check The check to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.optional(check)
+	assert(t.callback(check))
+	return function(value)
+		if value == nil then
+			return true
+		end
+
+		local success = check(value)
+		if success then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	matches given tuple against tuple type definition
+
+	@param ... The type definition for the tuples
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.tuple(...)
+	local checks = { ... }
+	return function(...)
+		local args = { ... }
+		for i, check in ipairs(checks) do
+			local success = check(args[i])
+			if success == false then
+				return false
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures all keys in given table pass check
+
+	@param check The function to use to check the keys
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.keys(check)
+	assert(t.callback(check))
+	return function(value)
+		local tableSuccess = t.table(value)
+		if tableSuccess == false then
+			return false
+		end
+
+		for key in pairs(value) do
+			local success = check(key)
+			if success == false then
+				return false
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures all values in given table pass check
+
+	@param check The function to use to check the values
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.values(check)
+	assert(t.callback(check))
+	return function(value)
+		local tableSuccess = t.table(value)
+		if tableSuccess == false then
+			return false
+		end
+
+		for _, val in pairs(value) do
+			local success = check(val)
+			if success == false then
+				return false
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is a table and all keys pass keyCheck and all values pass valueCheck
+
+	@param keyCheck The function to use to check the keys
+	@param valueCheck The function to use to check the values
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.map(keyCheck, valueCheck)
+	assert(t.callback(keyCheck))
+	assert(t.callback(valueCheck))
+	local keyChecker = t.keys(keyCheck)
+	local valueChecker = t.values(valueCheck)
+
+	return function(value)
+		local keySuccess = keyChecker(value)
+		if not keySuccess then
+			return false
+		end
+
+		local valueSuccess = valueChecker(value)
+		if not valueSuccess then
+			return false
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is a table and all keys pass valueCheck and all values are true
+
+	@param valueCheck The function to use to check the values
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.set(valueCheck)
+	return t.map(valueCheck, t.literal(true))
+end
+
+do
+	local arrayKeysCheck = t.keys(t.integer)
+--[[**
+		ensures value is an array and all values of the array match check
+
+		@param check The check to compare all values with
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.array(check)
+		assert(t.callback(check))
+		local valuesCheck = t.values(check)
+
+		return function(value)
+			local keySuccess = arrayKeysCheck(value)
+			if keySuccess == false then
+				return false
+			end
+
+			-- # is unreliable for sparse arrays
+			-- Count upwards using ipairs to avoid false positives from the behavior of #
+			local arraySize = 0
+
+			for _ in ipairs(value) do
+				arraySize = arraySize + 1
+			end
+
+			for key in pairs(value) do
+				if key < 1 or key > arraySize then
+					return false
+				end
+			end
+
+			local valueSuccess = valuesCheck(value)
+			if not valueSuccess then
+				return false
+			end
+
+			return true
+		end
+	end
+
+--[[**
+		ensures value is an array of a strict makeup and size
+
+		@param check The check to compare all values with
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.strictArray(...)
+		local valueTypes = { ... }
+		assert(t.array(t.callback)(valueTypes))
+
+		return function(value)
+			local keySuccess = arrayKeysCheck(value)
+			if keySuccess == false then
+				return false
+			end
+
+			-- If there's more than the set array size, disallow
+			if #valueTypes < #value then
+				return false
+			end
+
+			for idx, typeFn in pairs(valueTypes) do
+				local typeSuccess = typeFn(value[idx])
+				if not typeSuccess then
+					return false
+				end
+			end
+
+			return true
+		end
+	end
+end
+
+do
+	local callbackArray = t.array(t.callback)
+--[[**
+		creates a union type
+
+		@param ... The checks to union
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.union(...)
+		local checks = { ... }
+		assert(callbackArray(checks))
+
+		return function(value)
+			for _, check in ipairs(checks) do
+				if check(value) then
+					return true
+				end
+			end
+
+			return false
+		end
+	end
+
+--[[**
+		Alias for t.union
+	**--]]
+	t.some = t.union
+
+--[[**
+		creates an intersection type
+
+		@param ... The checks to intersect
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.intersection(...)
+		local checks = { ... }
+		assert(callbackArray(checks))
+
+		return function(value)
+			for _, check in ipairs(checks) do
+				local success = check(value)
+				if not success then
+					return false
+				end
+			end
+
+			return true
+		end
+	end
+
+--[[**
+		Alias for t.intersection
+	**--]]
+	t.every = t.intersection
+end
+
+do
+	local checkInterface = t.map(t.any, t.callback)
+--[[**
+		ensures value matches given interface definition
+
+		@param checkTable The interface definition
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.interface(checkTable)
+		assert(checkInterface(checkTable))
+		return function(value)
+			local tableSuccess = t.table(value)
+			if tableSuccess == false then
+				return false
+			end
+
+			for key, check in pairs(checkTable) do
+				local success = check(value[key])
+				if success == false then
+					return false
+				end
+			end
+
+			return true
+		end
+	end
+
+--[[**
+		ensures value matches given interface definition strictly
+
+		@param checkTable The interface definition
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.strictInterface(checkTable)
+		assert(checkInterface(checkTable))
+		return function(value)
+			local tableSuccess = t.table(value)
+			if tableSuccess == false then
+				return false
+			end
+
+			for key, check in pairs(checkTable) do
+				local success = check(value[key])
+				if success == false then
+					return false
+				end
+			end
+
+			for key in pairs(value) do
+				if not checkTable[key] then
+					return false
+				end
+			end
+
+			return true
+		end
+	end
+end
+
+--[[**
+	ensure value is an Instance and it's ClassName matches the given ClassName
+
+	@param className The class name to check for
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.instanceOf(className, childTable)
+	assert(t.string(className))
+
+	local childrenCheck
+	if childTable ~= nil then
+		childrenCheck = t.children(childTable)
+	end
+
+	return function(value)
+		local instanceSuccess = t.Instance(value)
+		if not instanceSuccess then
+			return false
+		end
+
+		if value.ClassName ~= className then
+			return false
+		end
+
+		if childrenCheck then
+			local childrenSuccess = childrenCheck(value)
+			if not childrenSuccess then
+				return false
+			end
+		end
+
+		return true
+	end
+end
+
+t.instance = t.instanceOf
+
+--[[**
+	ensure value is an Instance and it's ClassName matches the given ClassName by an IsA comparison
+
+	@param className The class name to check for
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.instanceIsA(className, childTable)
+	assert(t.string(className))
+
+	local childrenCheck
+	if childTable ~= nil then
+		childrenCheck = t.children(childTable)
+	end
+
+	return function(value)
+		local instanceSuccess = t.Instance(value)
+		if not instanceSuccess then
+			return false
+		end
+
+		if not value:IsA(className) then
+			return false
+		end
+
+		if childrenCheck then
+			local childrenSuccess = childrenCheck(value)
+			if not childrenSuccess then
+				return false
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is an enum of the correct type
+
+	@param enum The enum to check
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.enum(enum)
+	assert(t.Enum(enum))
+	return function(value)
+		local enumItemSuccess = t.EnumItem(value)
+		if not enumItemSuccess then
+			return false
+		end
+
+		if value.EnumType == enum then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+do
+	local checkWrap = t.tuple(t.callback, t.callback)
+
+--[[**
+		wraps a callback in an assert with checkArgs
+
+		@param callback The function to wrap
+		@param checkArgs The function to use to check arguments in the assert
+
+		@returns A function that first asserts using checkArgs and then calls callback
+	**--]]
+	function t.wrap(callback, checkArgs)
+		assert(checkWrap(callback, checkArgs))
+		return function(...)
+			assert(checkArgs(...))
+			return callback(...)
+		end
+	end
+end
+
+--[[**
+	asserts a given check
+
+	@param check The function to wrap with an assert
+
+	@returns A function that simply wraps the given check in an assert
+**--]]
+function t.strict(check)
+	return function(...)
+		assert(check(...))
+	end
+end
+
+do
+	local checkChildren = t.map(t.string, t.callback)
+
+--[[**
+		Takes a table where keys are child names and values are functions to check the children against.
+		Pass an instance tree into the function.
+		If at least one child passes each check, the overall check passes.
+
+		Warning! If you pass in a tree with more than one child of the same name, this function will always return false
+
+		@param checkTable The table to check against
+
+		@returns A function that checks an instance tree
+	**--]]
+	function t.children(checkTable)
+		assert(checkChildren(checkTable))
+
+		return function(value)
+			local instanceSuccess = t.Instance(value)
+			if not instanceSuccess then
+				return false
+			end
+
+			local childrenByName = {}
+			for _, child in ipairs(value:GetChildren()) do
+				local name = child.Name
+				if checkTable[name] then
+					if childrenByName[name] then
+						return false
+					end
+
+					childrenByName[name] = child
+				end
+			end
+
+			for name, check in pairs(checkTable) do
+				local success = check(childrenByName[name])
+				if not success then
+					return false
+				end
+			end
+
+			return true
+		end
+	end
+end
+
+return { t = t }
+]]></ProtectedString>
+												<int64 name="SourceAssetId">-1</int64>
+												<BinaryString name="Tags"></BinaryString>
+												<UniqueId name="UniqueId">4db7e10cda041d1f085077e100007e6c</UniqueId>
+											</Properties>
+										</Item>
+									</Item>
+								</Item>
 							</Item>
 						</Item>
 					</Item>
@@ -11170,6 +12408,15 @@ end
 t.boolean = t.typeof("boolean")
 
 --[[**
+	ensures Lua primitive buffer type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.buffer = t.typeof("buffer")
+
+--[[**
 	ensures Lua primitive thread type
 
 	@param value The value to check against
@@ -11224,6 +12471,15 @@ t.table = t.typeof("table")
 	@returns True iff the condition is satisfied, false otherwise
 **--]]
 t.userdata = t.type("userdata")
+
+--[[**
+	ensures Lua primitive vector type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.vector = t.type("vector")
 
 --[[**
 	ensures value is a number and non-NaN
@@ -11385,6 +12641,24 @@ t.Enums = t.typeof("Enums")
 t.Faces = t.typeof("Faces")
 
 --[[**
+	ensures Roblox FloatCurveKey type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.FloatCurveKey = t.typeof("FloatCurveKey")
+
+--[[**
+	ensures Roblox Font type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Font = t.typeof("Font")
+
+--[[**
 	ensures Roblox Instance type
 
 	@param value The value to check against
@@ -11419,6 +12693,15 @@ t.NumberSequence = t.typeof("NumberSequence")
 	@returns True iff the condition is satisfied, false otherwise
 **--]]
 t.NumberSequenceKeypoint = t.typeof("NumberSequenceKeypoint")
+
+--[[**
+	ensures Roblox OverlapParams type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.OverlapParams = t.typeof("OverlapParams")
 
 --[[**
 	ensures Roblox PathWaypoint type
@@ -11583,6 +12866,33 @@ t.Vector3 = t.typeof("Vector3")
 t.Vector3int16 = t.typeof("Vector3int16")
 
 --[[**
+	ensures value is any of the given literal values
+
+	@param literals The literals to check against
+
+	@returns A function that will return true if the condition is passed
+**--]]
+function t.literalList(literals)
+	-- optimization for primitive types
+	local set = {}
+	for _, literal in ipairs(literals) do
+		set[literal] = true
+	end
+	return function(value)
+		if set[value] then
+			return true
+		end
+		for _, literal in ipairs(literals) do
+			if literal == value then
+				return true
+			end
+		end
+
+		return false
+	end
+end
+
+--[[**
 	ensures value is a given literal value
 
 	@param literal The literal to use
@@ -11607,7 +12917,7 @@ function t.literal(...)
 			literals[i] = t.literal(value)
 		end
 
-		return t.union(table.unpack(literals, 1, size))
+		return t.unionList(literals)
 	end
 end
 
@@ -12074,12 +13384,11 @@ do
 --[[**
 		creates a union type
 
-		@param ... The checks to union
+		@param checks The checks to union
 
 		@returns A function that will return true iff the condition is passed
 	**--]]
-	function t.union(...)
-		local checks = { ... }
+	function t.unionList(checks)
 		assert(callbackArray(checks))
 
 		return function(value)
@@ -12094,6 +13403,17 @@ do
 	end
 
 --[[**
+		creates a union type
+
+		@param ... The checks to union
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.union(...)
+		return t.unionList({ ... })
+	end
+
+--[[**
 		Alias for t.union
 	**--]]
 	t.some = t.union
@@ -12101,12 +13421,11 @@ do
 --[[**
 		creates an intersection type
 
-		@param ... The checks to intersect
+		@param checks The checks to intersect
 
 		@returns A function that will return true iff the condition is passed
 	**--]]
-	function t.intersection(...)
-		local checks = { ... }
+	function t.intersectionList(checks)
 		assert(callbackArray(checks))
 
 		return function(value)
@@ -12119,6 +13438,17 @@ do
 
 			return true
 		end
+	end
+
+--[[**
+		creates an intersection type
+
+		@param ... The checks to intersect
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.intersection(...)
+		return t.intersectionList({ ... })
 	end
 
 --[[**
@@ -12539,7 +13869,8 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 local Reflect = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@flamework", "core", "out").Reflect
 local Service = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@flamework", "core", "out").Service
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
-local SkillTest = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skills", "test-skills").SkillTest
+local SkillRunner = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skill-builder").SkillRunner
+local TestSkill = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "skills", "test-skill").TestSkill
 local ToolGiver
 do
 	ToolGiver = setmetatable({}, {
@@ -12559,8 +13890,12 @@ do
 			local _ = p.Character or (p.CharacterAdded:Wait())
 			local tool = Instance.new("Tool")
 			tool.Activated:Connect(function()
-				return SkillTest:run(tool.Parent)
+				print("activated!")
+				SkillRunner.new(TestSkill, {
+					character = tool.Parent,
+				})
 			end)
+			tool.Name = "Test Skill"
 			tool.RequiresHandle = false
 			tool.Parent = p:WaitForChild("Backpack")
 		end)
@@ -12582,24 +13917,6 @@ return {
 						<UniqueId name="UniqueId">5cf9ac95759887ba084b95d900007609</UniqueId>
 					</Properties>
 				</Item>
-			</Item>
-			<Item class="Script" referent="RBX876ec22a827746c986a45d65343e5e1d">
-				<Properties>
-					<BinaryString name="AttributesSerialize"></BinaryString>
-					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-					<bool name="DefinesCapabilities">false</bool>
-					<bool name="Disabled">false</bool>
-					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-					<Content name="LinkedSource"><null></null></Content>
-					<string name="Name">action-loader</string>
-					<token name="RunContext">0</token>
-					<string name="ScriptGuid">{a33fd4c4-9c6d-48bf-a6d3-bbed3bb69232}</string>
-					<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
-]]></ProtectedString>
-					<int64 name="SourceAssetId">-1</int64>
-					<BinaryString name="Tags"></BinaryString>
-					<UniqueId name="UniqueId">5cf9ac95759887ba084b95d900008940</UniqueId>
-				</Properties>
 			</Item>
 		</Item>
 	</Item>
